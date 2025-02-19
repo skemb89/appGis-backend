@@ -4,9 +4,7 @@ const mongoose = require('mongoose');
 const cors = require('cors');
 
 const app = express();
-const host = process.env.HOST || 'localhost'; // Usa l'host pubblico o localhost
-const PORT = process.env.PORT || 5000;
-
+const PORT = process.env.PORT || 5000; // Usa la porta definita da Render o 5000 di fallback
 
 // Importa le rotte dei giochi
 const gameRoutes = require('./routes/games');
@@ -17,15 +15,17 @@ app.use(cors());
 
 // Connessione a MongoDB
 mongoose.connect(process.env.MONGO_URI)
-.then(() => console.log("✅ Connesso a MongoDB"))
+  .then(() => console.log("✅ Connesso a MongoDB"))
   .catch(err => console.error("❌ Errore di connessione:", err));
 
 // Usa le rotte per i giochi
 app.use('/api', gameRoutes);
+
+// Determina l'host in base all'ambiente (locale o Render)
+const host = process.env.NODE_ENV === 'production' ? '0.0.0.0' : 'localhost'; // Usa '0.0.0.0' in produzione (Render), altrimenti 'localhost'
 
 // Avvio del server
 app.listen(PORT, host, () => {
   const address = `http://${host}:${PORT}`;
   console.log(`🚀 Server avviato su ${address}`);
 });
-
