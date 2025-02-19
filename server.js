@@ -4,7 +4,9 @@ const mongoose = require('mongoose');
 const cors = require('cors');
 
 const app = express();
+const host = process.env.HOST || 'localhost'; // Usa l'host pubblico o localhost
 const PORT = process.env.PORT || 5000;
+
 
 // Importa le rotte dei giochi
 const gameRoutes = require('./routes/games');
@@ -22,6 +24,8 @@ mongoose.connect(process.env.MONGO_URI)
 app.use('/api', gameRoutes);
 
 // Avvio del server
-app.listen(PORT, () => {
-    console.log(`🚀 Server avviato su http://localhost:${PORT}`);
+app.listen(PORT, host, () => {
+  const address = `http://${host}:${PORT}`;
+  console.log(`🚀 Server avviato su ${address}`);
 });
+
