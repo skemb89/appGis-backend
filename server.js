@@ -8,6 +8,7 @@ const PORT = process.env.PORT || 5000; // Usa la porta definita da Render o 5000
 
 // Importa le rotte dei giochi
 const gameRoutes = require('./routes/games');
+const authRoutes = require('./routes/auth');
 
 // Middleware
 app.use(express.json());
@@ -20,6 +21,10 @@ mongoose.connect(process.env.MONGO_URI)
 
 // Usa le rotte per i giochi
 app.use('/api', gameRoutes);
+
+// Utilizzo delle rotte di autenticazione
+app.use('/api/auth', authRoutes); // <-- Associa le rotte sotto /api/auth
+
 
 // Determina l'host in base all'ambiente (locale o Render)
 const host = process.env.NODE_ENV === 'production' ? '0.0.0.0' : 'localhost'; // Usa '0.0.0.0' in produzione (Render), altrimenti 'localhost'
