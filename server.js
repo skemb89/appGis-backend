@@ -26,6 +26,12 @@ app.use('/api', gameRoutes);
 app.use('/api/auth', authRoutes); // <-- Associa le rotte sotto /api/auth
 
 
+// Aggiunto endpoint per "/""
+app.get('/', (req, res) => {
+  res.send('Server attivo!');
+});
+
+
 // Determina l'host in base all'ambiente (locale o Render)
 const host = process.env.NODE_ENV === 'production' ? '0.0.0.0' : 'localhost'; // Usa '0.0.0.0' in produzione (Render), altrimenti 'localhost'
 
