@@ -96,6 +96,54 @@ router.get('/profile2', authMiddleware, async (req, res) => {
   }
 });
 
+// Endpoint per modificare il profilo utente (modifica username, password e giocatore)
+router.put('/modifica-profilo', authMiddleware, async (req, res) => {
+  try {
+    // Estrai i dati dal corpo della richiesta
+    const { username, password, giocatoreId } = req.body;
+
+    // Trova l'utente che sta facendo la richiesta usando l'ID contenuto nel token
+    const user = await User.findById(req.user.id);
+    if (!user) {
+      return res.status(404).json({ message: 'Utente non trovato' });
+    }
+
+    // Modifica l'username se è stato fornito un nuovo valore
+    if (username && username !== user.username) {
+      user.username = username;
+    }
+
+    // Se è stata fornita una nuova password, hashala e salvala
+    if (password) {
+      const salt = await bcrypt.genSalt(10);
+      user.password = await bcrypt.hash(password, salt);
+    }
+
+    // Se è stato fornito un nuovo giocatore, aggiorna il campo giocatore
+    if (giocatoreId) {
+      const giocatore = await Giocatore.findById(giocatoreId);
+      if (!giocatore) {
+        return res.status(404).json({ message: 'Giocatore non trovato' });
+      }
+      user.giocatore = giocatore._id;
+    }
+
+    // Salva l'utente modificato nel database
+    await user.save();
+
+    // Risposta di successo
+    res.status(200).json({
+      message: 'Profilo aggiornato con successo!',
+      user: {
+        username: user.username,
+        giocatore: user.giocatore ? user.giocatore.nome : 'Nessun giocatore associato',
+      },
+    });
+  } catch (error) {
+    console.error('Errore nel modificare il profilo:', error);
+    res.status(500).json({ message: 'Errore interno del server' });
+  }
+});
 
 
 module.exports = router;
