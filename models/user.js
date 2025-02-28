@@ -13,8 +13,9 @@ const UserSchema = new mongoose.Schema({
     required: true 
   },
   giocatore: { 
-    type: String, 
-    required: false //dovrà essere impostato a true 
+    type: mongoose.Schema.Types.ObjectId,  // Riferimento al modello Giocatore
+    ref: 'Giocatore', // Indica il modello Giocatore
+    required: false  // Questo campo è opzionale; metti true se desideri che ogni utente debba avere un giocatore
   }
 });
 

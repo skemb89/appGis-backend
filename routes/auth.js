@@ -75,4 +75,29 @@ router.get('/profile', authMiddleware, async (req, res) => {
   }
 });
 
+// Endpoint di profilo protetto (rinominato in /api/auth/profile2)
+// GET /api/auth/profile2
+router.get('/profile2', authMiddleware, async (req, res) => {
+  try {
+    // req.user viene impostato dal middleware se il token è valido
+    const user = await User.findById(req.user.id)
+      .populate('giocatore') // Popola il campo "giocatore"
+      .select('username giocatore'); // Seleziona l'username e il giocatore
+
+    if (!user) {
+      return res.status(404).json({ message: 'Utente non trovato' });
+    }
+
+    // Restituisce sia l'username che il nome del giocatore
+    res.status(200).json({
+      username: user.username,
+      giocatore: user.giocatore ? user.giocatore.nome : 'Nessun giocatore associato',
+    });
+  } catch (error) {
+    console.error('Errore nel recuperare il profilo:', error);
+    res.status(500).json({ message: 'Errore interno del server' });
+  }
+});
+
+
 module.exports = router;
