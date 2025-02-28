@@ -1,6 +1,7 @@
 const express = require('express');
 const jwt = require('jsonwebtoken');
 const User = require('../models/user');
+const Giocatore = require('../models/giocatore');  // Assicurati che il percorso sia corretto
 const authMiddleware = require('../middlewares/authMiddleware');
 
 const router = express.Router();
@@ -96,21 +97,16 @@ router.get('/profile2', authMiddleware, async (req, res) => {
   }
 });
 
-// Endpoint per modificare il profilo utente (modifica username, password e giocatore)
+// Endpoint per modificare il profilo utente (modifica password e giocatore)
 router.put('/modifica-profilo', authMiddleware, async (req, res) => {
   try {
     // Estrai i dati dal corpo della richiesta
-    const { username, password, giocatoreId } = req.body;
+    const { password, giocatoreId } = req.body;
 
     // Trova l'utente che sta facendo la richiesta usando l'ID contenuto nel token
     const user = await User.findById(req.user.id);
     if (!user) {
       return res.status(404).json({ message: 'Utente non trovato' });
-    }
-
-    // Modifica l'username se è stato fornito un nuovo valore
-    if (username && username !== user.username) {
-      user.username = username;
     }
 
     // Se è stata fornita una nuova password, hashala e salvala
@@ -125,7 +121,7 @@ router.put('/modifica-profilo', authMiddleware, async (req, res) => {
       if (!giocatore) {
         return res.status(404).json({ message: 'Giocatore non trovato' });
       }
-      user.giocatore = giocatore._id;
+      user.giocatore = giocatore._id;  // Associa il nuovo giocatore all'utente
     }
 
     // Salva l'utente modificato nel database
@@ -135,7 +131,7 @@ router.put('/modifica-profilo', authMiddleware, async (req, res) => {
     res.status(200).json({
       message: 'Profilo aggiornato con successo!',
       user: {
-        username: user.username,
+        username: user.username, // Può restare, anche se non modificato
         giocatore: user.giocatore ? user.giocatore.nome : 'Nessun giocatore associato',
       },
     });
@@ -144,6 +140,7 @@ router.put('/modifica-profilo', authMiddleware, async (req, res) => {
     res.status(500).json({ message: 'Errore interno del server' });
   }
 });
+
 
 
 module.exports = router;
