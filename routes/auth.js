@@ -105,6 +105,8 @@ router.put('/modifica-profilo', authMiddleware, async (req, res) => {
     // Estrai i dati dal corpo della richiesta
     const { password, giocatoreId } = req.body;
 
+    console.log('Dati ricevuti:', req.body); // Log per vedere cosa riceve il server
+
     // Trova l'utente che sta facendo la richiesta usando l'ID contenuto nel token
     const user = await User.findById(req.user.id);
     if (!user) {
@@ -115,6 +117,8 @@ router.put('/modifica-profilo', authMiddleware, async (req, res) => {
     if (password) {
       const salt = await bcrypt.genSalt(10);
       user.password = await bcrypt.hash(password, salt);
+
+      console.log('Nuova password hashata:', user.password); // Log per vedere la password dopo l'hash
     }
 
     // Se è stato fornito un nuovo giocatore, aggiorna il campo giocatore
@@ -130,6 +134,8 @@ router.put('/modifica-profilo', authMiddleware, async (req, res) => {
     await user.save();
 
     // Risposta di successo
+    console.log('Profilo aggiornato:', user); // Log per vedere il profilo aggiornato
+
     res.status(200).json({
       message: 'Profilo aggiornato con successo!',
       user: {
@@ -142,7 +148,6 @@ router.put('/modifica-profilo', authMiddleware, async (req, res) => {
     res.status(500).json({ message: 'Errore interno del server' });
   }
 });
-
 
 
 module.exports = router;
