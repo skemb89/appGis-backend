@@ -2,7 +2,8 @@ const express = require('express');
 const jwt = require('jsonwebtoken');
 const User = require('../models/user');
 const Giocatore = require('../models/giocatore');  // Assicurati che il percorso sia corretto
-const bcrypt = require('bcryptjs'); // o bcrypt se stai usando la versione nativa
+const bcrypt = require('bcryptjs');
+
 const authMiddleware = require('../middlewares/authMiddleware');
 
 const router = express.Router();
