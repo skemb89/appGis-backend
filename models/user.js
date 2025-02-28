@@ -11,6 +11,10 @@ const UserSchema = new mongoose.Schema({
   password: { 
     type: String, 
     required: true 
+  },
+  giocatore: { 
+    type: String, 
+    required: false //dovrà essere impostato a true 
   }
 });
 

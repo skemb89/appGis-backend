@@ -9,6 +9,7 @@ const PORT = process.env.PORT || 5000; // Usa la porta definita da Render o 5000
 // Importa le rotte dei giochi
 const gameRoutes = require('./routes/games');
 const authRoutes = require('./routes/auth');
+const giocatoriRoutes = require("./routes/giocatori");
 
 // Middleware
 app.use(express.json());
@@ -24,6 +25,9 @@ app.use('/api', gameRoutes);
 
 // Utilizzo delle rotte di autenticazione
 app.use('/api/auth', authRoutes); // <-- Associa le rotte sotto /api/auth
+
+// Utilizzo delle rotte per i giocatori
+app.use("/api/giocatori", giocatoriRoutes);
 
 
 // Aggiunto endpoint per "/""
