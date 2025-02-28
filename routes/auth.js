@@ -113,13 +113,10 @@ router.put('/modifica-profilo', authMiddleware, async (req, res) => {
       return res.status(404).json({ message: 'Utente non trovato' });
     }
 
-    // Se è stata fornita una nuova password, hashala e salvala
-    if (password) {
-      const salt = await bcrypt.genSalt(10);
-      user.password = await bcrypt.hash(password, salt);
-
-      console.log('Nuova password hashata:', user.password); // Log per vedere la password dopo l'hash
-    }
+      // Assegna la password in chiaro, il middleware farà l'hashing
+      if (password) {
+        user.password = password;  // NON HASHARE QUI!
+      }
 
     // Se è stato fornito un nuovo giocatore, aggiorna il campo giocatore
     if (giocatoreId) {
