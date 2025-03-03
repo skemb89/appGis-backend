@@ -1,13 +1,14 @@
 const mongoose = require('mongoose');
 
-// 1. Definiamo lo schema (la struttura del gioco)
+// Definizione dello schema per Game
 const gameSchema = new mongoose.Schema({
     nome: {
         type: String,
         required: true,
     },
     tipologia: {
-        type: String,
+        type: mongoose.Schema.Types.ObjectId,  // Riferimento a Tipologia
+        ref: 'Tipologia',
         required: true, 
     },
     durataMedia: {
@@ -27,7 +28,8 @@ const gameSchema = new mongoose.Schema({
         required: false, 
     },
     proprietario: {
-        type: String,  // Proprietario del gioco
+        type: mongoose.Schema.Types.ObjectId,  // Riferimento a Giocatore
+        ref: 'Giocatore',
         required: false,
     },
     posizione: {
@@ -36,9 +38,8 @@ const gameSchema = new mongoose.Schema({
     }
 });
 
-// 2. Creiamo il modello 'Game' utilizzando lo schema definito sopra
+// Creiamo il modello 'Game'
+const Game = mongoose.model('Game', gameSchema);
 
-const Game = mongoose.model('Game', gameSchema); // games è il nome della collezione (mongoDB usa il nome del modello in minuscolo e al plurale)
-
-// 3. Esportiamo il modello per utilizzarlo altrove nel progetto
+// Esportiamo il modello
 module.exports = Game;

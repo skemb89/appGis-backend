@@ -1,5 +1,7 @@
 const express = require('express');
 const Game = require('../models/game');  // Importa il modello Game
+const Tipologia = require('../models/tipologia');  // Importa il modello Tipologia
+const Giocatore = require('../models/giocatore');  // Importa il modello Giocatore
 
 const router = express.Router();
 
@@ -30,7 +32,11 @@ router.post('/giochi', async (req, res) => {
 // 2. Ottieni tutti i giochi (GET)
 router.get('/giochi', async (req, res) => {
     try {
-        const giochi = await Game.find();
+        // Popoliamo i campi 'tipologia' e 'proprietario' per ottenere i rispettivi nomi
+        const giochi = await Game.find()
+            .populate('tipologia', 'nome')  // Popola il campo 'tipologia' con il nome
+            .populate('proprietario', 'nome');  // Popola il campo 'proprietario' con il nome
+
         res.status(200).json(giochi);
     } catch (error) {
         console.error('Errore nel recuperare i giochi:', error);
