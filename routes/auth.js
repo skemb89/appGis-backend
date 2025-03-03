@@ -31,12 +31,11 @@ router.post('/register', async (req, res) => {
 });
 
 // Endpoint di login
-// POST /api/auth/login
 router.post('/login', async (req, res) => {
   const { username, password } = req.body;
   try {
     // Trova l'utente nel database
-    const user = await User.findOne({ username });
+    const user = await User.findOne({ username }).populate('giocatore');
     if (!user) {
       return res.status(400).json({ message: 'Credenziali non valide' });
     }
@@ -54,17 +53,20 @@ router.post('/login', async (req, res) => {
       { expiresIn: '1h' }
     );
 
-    // Restituisci il token e l'ID dell'utente
-    res.status(200).json({
-      token,
-      userId: user._id, // Restituiamo anche l'ID dell'utente
+    // Restituisci anche l'ID del giocatore se esiste
+    const userId = user.giocatore ? user.giocatore._id : null;  // Ottieni l'ID del giocatore se presente
+
+    res.status(200).json({ 
+      token, 
       message: 'Login effettuato con successo',
+      userId: userId  // Invia anche l'ID del giocatore
     });
   } catch (error) {
     console.error('Errore nel login:', error);
     res.status(500).json({ message: 'Errore interno del server' });
   }
 });
+
 
 // Endpoint di profilo protetto
 // GET /api/auth/profile
