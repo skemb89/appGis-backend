@@ -54,7 +54,12 @@ router.post('/login', async (req, res) => {
       { expiresIn: '1h' }
     );
 
-    res.status(200).json({ token, message: 'Login effettuato con successo' });
+    // Restituisci il token e l'ID dell'utente
+    res.status(200).json({
+      token,
+      userId: user._id, // Restituiamo anche l'ID dell'utente
+      message: 'Login effettuato con successo',
+    });
   } catch (error) {
     console.error('Errore nel login:', error);
     res.status(500).json({ message: 'Errore interno del server' });
