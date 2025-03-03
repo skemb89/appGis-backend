@@ -90,4 +90,26 @@ router.delete('/giochi/:id', async (req, res) => {
     }
 });
 
+// 5. Ottieni i giochi per un giocatore specifico (GET per un utente loggato)
+router.get('/giochi/giocatore/:userId', async (req, res) => {
+    const { userId } = req.params;
+
+    try {
+        // Troviamo i giochi dove il proprietario corrisponde all'ID dell'utente loggato
+        const giochi = await Game.find({ proprietario: userId })
+            .populate('tipologia', 'nome')  // Popola il campo 'tipologia' con il nome
+            .populate('proprietario', 'nome');  // Popola il campo 'proprietario' con il nome
+
+        if (!giochi || giochi.length === 0) {
+            return res.status(404).json({ message: 'Nessun gioco trovato per questo utente' });
+        }
+
+        res.status(200).json(giochi);
+    } catch (error) {
+        console.error('Errore nel recuperare i giochi:', error);
+        res.status(500).json({ message: 'Errore nel recuperare i giochi' });
+    }
+});
+
+
 module.exports = router;  // Esporta il router
