@@ -35,6 +35,20 @@ const gameSchema = new mongoose.Schema({
     posizione: {
         type: String,  // Posizione fisica del gioco
         required: false,
+    },
+    // Nuovi campi per integrazione con BGG
+    bggId: {
+        type: Number,  // ID del gioco su BoardGameGeek
+        unique: false,
+        sparse: true  // Permette valori null
+    },
+    immagine: {
+        type: String,  // URL dell'immagine del gioco
+        required: false
+    },
+    dataPubblicazione: {
+        type: Number,  // Anno di pubblicazione del gioco
+        required: false
     }
 });
 
