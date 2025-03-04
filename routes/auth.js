@@ -153,5 +153,33 @@ router.put('/modifica-profilo', authMiddleware, async (req, res) => {
   }
 });
 
+// Nuovo endpoint per ottenere il nome del giocatore associato all'utente
+// GET /api/auth/giocatore
+router.get('/giocatore', authMiddleware, async (req, res) => {
+  try {
+    // Trova l'utente nel database e popola il campo "giocatore"
+    const user = await User.findById(req.user.id).populate('giocatore', 'nome');  // Solo il nome del giocatore
+    if (!user) {
+      return res.status(404).json({ message: 'Utente non trovato' });
+    }
+
+    // Restituisci il nome del giocatore se esiste
+    if (user.giocatore) {
+      res.status(200).json({
+        nomeGiocatore: user.giocatore.nome  // Restituisce il nome del giocatore
+      });
+    } else {
+      res.status(200).json({
+        nomeGiocatore: 'Nessun giocatore associato'  // Se l'utente non ha un giocatore associato
+      });
+    }
+
+  } catch (error) {
+    console.error('Errore nel recuperare il giocatore:', error);
+    res.status(500).json({ message: 'Errore interno del server' });
+  }
+});
+
+
 
 module.exports = router;
