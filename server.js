@@ -29,6 +29,8 @@ app.use('/api/auth', authRoutes); // <-- Associa le rotte sotto /api/auth
 // Utilizzo delle rotte per i giocatori
 app.use("/api/giocatori", giocatoriRoutes);
 
+// Serve i file statici dalla cartella 'uploads'
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 // Aggiunto endpoint per "/""
 app.get('/', (req, res) => {

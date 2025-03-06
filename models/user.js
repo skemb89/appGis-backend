@@ -13,11 +13,17 @@ const UserSchema = new mongoose.Schema({
     required: true 
   },
   giocatore: { 
-    type: mongoose.Schema.Types.ObjectId,  // Riferimento al modello Giocatore
-    ref: 'Giocatore', // Indica il modello Giocatore
-    required: false  // Questo campo è opzionale; metti true se desideri che ogni utente debba avere un giocatore
+    type: mongoose.Schema.Types.ObjectId,  
+    ref: 'Giocatore', 
+    required: false  
+  },
+  photo: { 
+    type: String, // URL della foto profilo
+    required: false, // Campo opzionale
+    default: '' // Se vuoto, non mostra un'immagine
   }
 });
+
 
 // Middleware pre-save per hashare la password
 UserSchema.pre('save', async function(next) {

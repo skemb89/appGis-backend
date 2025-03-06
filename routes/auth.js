@@ -180,6 +180,29 @@ router.get('/giocatore', authMiddleware, async (req, res) => {
   }
 });
 
+// Endpoint per ottenere il profilo utente con foto
+// GET /api/auth/profile-with-photo
+router.get('/profile-with-photo', authMiddleware, async (req, res) => {
+  try {
+    // Trova l'utente usando l'id contenuto nel token
+    const user = await User.findById(req.user.id).select('username photo');
+    if (!user) {
+      return res.status(404).json({ message: 'Utente non trovato' });
+    }
+
+    // Se l'utente non ha una foto, assegna il percorso della foto di default
+    const photoUrl = user.photo ? user.photo : '/uploads/default.png';
+
+    // Restituisci l'utente con username e photo
+    res.status(200).json({
+      username: user.username,
+      photo: photoUrl
+    });
+  } catch (error) {
+    console.error('Errore nel recuperare il profilo con foto:', error);
+    res.status(500).json({ message: 'Errore interno del server' });
+  }
+});
 
 
 module.exports = router;
