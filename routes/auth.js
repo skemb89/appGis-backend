@@ -11,7 +11,8 @@ const router = express.Router();
 // Endpoint di registrazione
 // POST /api/auth/register
 router.post('/register', async (req, res) => {
-  const { username, password } = req.body;
+  const { username, password, email, giocatore } = req.body;
+
   try {
     // Controlla se l'utente esiste già
     const existingUser = await User.findOne({ username });
@@ -20,7 +21,7 @@ router.post('/register', async (req, res) => {
     }
 
     // Crea un nuovo utente (la password verrà hashata dal middleware pre-save)
-    const newUser = new User({ username, password });
+    const newUser = new User({ username, email, password, giocatore });
     await newUser.save();
 
     res.status(201).json({ message: 'Utente registrato con successo!' });
