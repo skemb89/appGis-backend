@@ -21,9 +21,22 @@ const UserSchema = new mongoose.Schema({
     type: String, // URL della foto profilo
     required: false, // Campo opzionale
     default: '' // Se vuoto, non mostra un'immagine
+  },
+  status: { 
+    type: String, 
+    enum: ['In attesa', 'Approvato'], // Stato dell'utente
+    default: 'In attesa', // Default per nuovi utenti
+  },
+  role: { 
+    type: String, 
+    enum: ['user', 'admin'], // Ruolo dell'utente
+    default: 'user', // Default per nuovi utenti
+  },
+  date: { 
+    type: Date, 
+    default: Date.now // Data di registrazione
   }
 });
-
 
 // Middleware pre-save per hashare la password
 UserSchema.pre('save', async function(next) {

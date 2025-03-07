@@ -11,6 +11,7 @@ const PORT = process.env.PORT || 5000; // Usa la porta definita da Render o 5000
 const gameRoutes = require('./routes/games');
 const authRoutes = require('./routes/auth');
 const giocatoriRoutes = require("./routes/giocatori");
+const regroutes = require('./routes/routereg'); // Utilizza il percorso relativo corretto per le rotte
 
 // Middleware
 app.use(express.json());
@@ -29,6 +30,9 @@ app.use('/api/auth', authRoutes); // <-- Associa le rotte sotto /api/auth
 
 // Utilizzo delle rotte per i giocatori
 app.use("/api/giocatori", giocatoriRoutes);
+
+// Utilizzo delle rotte per la registrazione
+app.use(regroutes);
 
 // Serve i file statici dalla cartella 'uploads'
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));

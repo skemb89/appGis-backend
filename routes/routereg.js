@@ -1,0 +1,13 @@
+//DEFINIIONI ROTTE PER FUNZIONI PLAYERSCONTROLLERS
+
+const express = require('express');
+const router = express.Router();
+const playersController = require('../controllers/playersController'); // Assicurati che il percorso sia corretto
+
+// Rotta per ottenere i giocatori non associati
+router.get('/api/players/unassociated', playersController.getUnassociatedPlayers);
+
+// Rotta per aggiungere un nuovo giocatore
+router.post('/api/players', playersController.addNewPlayer);
+
+module.exports = router;
