@@ -12,6 +12,7 @@ const gameRoutes = require('./routes/games');
 const authRoutes = require('./routes/auth');
 const giocatoriRoutes = require("./routes/giocatori");
 const regroutes = require('./routes/routereg'); // Utilizza il percorso relativo corretto per le rotte
+const adminRoutes = require('./routes/adminRoutes'); // Importiamo le rotte dell'admin
 
 // Middleware
 app.use(express.json());
@@ -33,6 +34,9 @@ app.use("/api/giocatori", giocatoriRoutes);
 
 // Utilizzo delle rotte per la registrazione
 app.use(regroutes);
+
+// Aggiunta delle rotte admin
+app.use('/api/admin', adminRoutes); 
 
 // Serve i file statici dalla cartella 'uploads'
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
