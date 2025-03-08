@@ -5,7 +5,7 @@ const cors = require('cors');
 const path = require('path');
 
 const app = express();
-const PORT = process.env.PORT || 5000; // Usa la porta definita da Render o 5000 di fallback
+const PORT = process.env.PORT || 10000; // Usa la porta definita da Render o 5000 di fallback
 
 // Importa le rotte dei giochi
 const gameRoutes = require('./routes/games');
@@ -45,6 +45,8 @@ app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 app.get('/', (req, res) => {
   res.send('Server attivo!');
 });
+
+console.log("PORT:", process.env.PORT);
 
 
 // Determina l'host in base all'ambiente (locale o Render)
