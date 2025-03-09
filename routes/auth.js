@@ -41,15 +41,24 @@ router.post('/login', async (req, res) => {
       return res.status(400).json({ message: 'Credenziali non valide' });
     }
 
+    // Verifica che l'utente abbia lo stato 'Approvato'
+    if (user.status !== 'Approvato') {
+      return res.status(403).json({ message: 'L\'utente non è approvato' });
+    }
+
     // Confronta la password fornita con quella hashata
     const isMatch = await user.comparePassword(password);
     if (!isMatch) {
       return res.status(400).json({ message: 'Credenziali non valide' });
     }
 
-    // Genera un token JWT con payload id e username, scadenza 1 ora
+    // Genera un token JWT con payload id, username, e ruolo, scadenza 1 ora
     const token = jwt.sign(
-      { id: user._id, username: user.username },
+      { 
+        id: user._id, 
+        username: user.username, 
+        role: user.role // Aggiungi il ruolo al payload del token
+      },
       process.env.JWT_SECRET,
       { expiresIn: '1h' }
     );
