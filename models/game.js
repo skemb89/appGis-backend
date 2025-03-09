@@ -1,13 +1,13 @@
 const mongoose = require('mongoose');
 
-// Definizione dello schema per Game
-const gameSchema = new mongoose.Schema({
+// Definizione dello schema per Giochi (dati generali del gioco)
+const giocoSchema = new mongoose.Schema({
     nome: {
         type: String,
         required: true,
     },
     tipologia: {
-        type: mongoose.Schema.Types.ObjectId,  // Riferimento a Tipologia
+        type: mongoose.Schema.Types.ObjectId,  // Riferimento alla collezione Tipologie
         ref: 'Tipologia',
         required: true, 
     },
@@ -27,33 +27,14 @@ const gameSchema = new mongoose.Schema({
         type: Number,  // Numero massimo di giocatori
         required: false, 
     },
-    proprietario: {
-        type: mongoose.Schema.Types.ObjectId,  // Riferimento a Giocatore
-        ref: 'Giocatore',
-        required: false,
-    },
-    posizione: {
-        type: String,  // Posizione fisica del gioco
-        required: false,
-    },
-    // Nuovi campi per integrazione con BGG
     bggId: {
         type: Number,  // ID del gioco su BoardGameGeek
         unique: false,
-        sparse: true  // Permette valori null
-    },
-    immagine: {
-        type: String,  // URL dell'immagine del gioco
-        required: false
-    },
-    dataPubblicazione: {
-        type: Number,  // Anno di pubblicazione del gioco
-        required: false
+        sparse: true
     }
 });
 
-// Creiamo il modello 'Game'
-const Game = mongoose.model('Game', gameSchema);
+// Creiamo il modello 'Gioco'
+const Gioco = mongoose.model('Gioco', giocoSchema);
 
-// Esportiamo il modello
-module.exports = Game;
+module.exports = Gioco;
