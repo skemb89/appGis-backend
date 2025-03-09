@@ -3,13 +3,17 @@ const Giocatore = require('../models/giocatore');
 
 /**
  * Recupera tutti gli utenti con il loro stato, ruolo, email e il giocatore associato.
+ * Inoltre, include una lista di tutti i giocatori disponibili.
  */
 const getUsers = async (req, res) => {
     try {
         // Trova tutti gli utenti e popola il campo 'giocatore' con i dati completi del giocatore associato
         const users = await User.find().populate('giocatore');
+        
+        // Recupera tutti i giocatori per il menu a tendina
+        const players = await Giocatore.find();
 
-        res.json(users); // Restituisce gli utenti come risposta JSON
+        res.json({ users, players }); // Restituisce gli utenti e i giocatori come risposta JSON
     } catch (error) {
         console.error("❌ Errore nel recupero degli utenti:", error);
         res.status(500).send("Errore nel recupero degli utenti");
