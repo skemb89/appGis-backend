@@ -1,6 +1,6 @@
 const express = require('express');
 const CopiaGioco = require('../models/copiegiochi');  // Modello per le copie fisiche dei giochi
-const Giocatore = require('../models/giocatore');      // Modello per i giocatori (non usato direttamente qui, ma utile per riferimento)
+const Giocatore = require('../models/giocatore');      // Modello per i giocatori
 const Tipologia = require('../models/tipologia');      // Modello per le tipologie di giochi
 const Gioco = require('../models/game');               // Modello per i giochi
 
@@ -31,9 +31,11 @@ router.get('/giochi/giocatore/:userId', async (req, res) => {
         // Il campo "proprietario" in CopiaGioco contiene l'ID del giocatore.
         const copieGioco = await CopiaGioco.find({ proprietario: userId })
             // Popola il campo "gioco" selezionando solo il "nome" e "tipologia"
-            .populate('gioco', 'nome tipologia')
-            // Popola il campo "tipologia" del gioco, ottenendo il "nome" dalla collection Tipologia
-            .populate('gioco.tipologia', 'nome');
+            .populate({
+                path: 'gioco', // Popola il campo "gioco"
+                select: 'nome tipologia', // Seleziona i campi "nome" e "tipologia" (quest'ultimo è un ID)
+                populate: { path: 'tipologia', select: 'nome' }  // Popola la "tipologia", selezionando solo il campo "nome"
+            });
 
         // Se non vengono trovate copie (cioè, nessun gioco posseduto), restituisce un 404
         if (!copieGioco || copieGioco.length === 0) {
@@ -46,7 +48,7 @@ router.get('/giochi/giocatore/:userId', async (req, res) => {
             return {
                 nome: gioco.nome,  // Il nome del gioco
                 // Se il gioco ha una tipologia popolata, restituisce il nome, altrimenti "N/A"
-                tipologia: gioco.tipologia && gioco.tipologia.nome ? gioco.tipologia.nome : 'N/A'
+                tipologia: gioco.tipologia ? gioco.tipologia.nome : 'N/A'
             };
         });
 
