@@ -2,6 +2,7 @@ const express = require('express');
 const CopiaGioco = require('../models/copiegiochi');  // Modello per le copie fisiche dei giochi
 const Giocatore = require('../models/giocatore');  // Modello per i giocatori
 const Tipologia = require('../models/tipologia');  // Modello per le tipologie di giochi
+const Gioco = require('../models/gioco');  // Modello per i giochi
 
 const router = express.Router();
 
