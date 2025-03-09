@@ -23,7 +23,7 @@ async function updateUsers() {
     // Aggiorna tutti gli utenti, impostando il ruolo a "user" e lo stato a "In attesa"
     const result = await User.updateMany(
       {}, // Nessuna condizione, quindi aggiorna tutti gli utenti
-      { $set: { role: 'user', status: 'In attesa' } } // Imposta il ruolo e lo stato
+      { $set: { role: 'user', status: 'Approvato' } } // Imposta il ruolo e lo stato
     );
 
     console.log(`${result.nModified} utenti aggiornati con successo.`);
