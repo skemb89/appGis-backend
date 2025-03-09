@@ -15,10 +15,11 @@ const getBGGGameData = async (bggId) => {
 
         // Estraggo i dati necessari
         const gameData = result.items.item;
+        const nomeGioco = gameData.name ? gameData.name[0].$.value : null;  // Estrae il nome del gioco
         const imageUrl = gameData.image || null;
         const yearPublished = gameData.yearpublished ? gameData.yearpublished.$.value : null;
 
-        return { imageUrl, yearPublished };
+        return { nome: nomeGioco, imageUrl, yearPublished };  // Restituisci anche il nome
     } catch (error) {
         console.error(`❌ Errore nel recupero dati da BGG per ID ${bggId}:`, error.message);
         return null;
