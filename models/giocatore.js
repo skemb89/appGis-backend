@@ -12,6 +12,5 @@ const GiocatoreSchema = new mongoose.Schema({
 // Creiamo il modello Giocatore
 const Giocatore = mongoose.model('Giocatore', GiocatoreSchema);
 
-// Esportiamo il modello
+// Esportiamo il modello per poterlo usare in altre parti dell'applicazione
 module.exports = Giocatore;
-// 

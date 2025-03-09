@@ -8,13 +8,18 @@ const UserSchema = new mongoose.Schema({
     required: true, 
     unique: true 
   },
+  email: { 
+    type: String, 
+    required: true, 
+    unique: true 
+  },
   password: { 
     type: String, 
     required: true 
   },
   giocatore: { 
     type: mongoose.Schema.Types.ObjectId,  
-    ref: 'Giocatore', 
+    ref: 'Giocatore', // Riferimento alla tabella Giocatore
     required: false  
   },
   photo: { 
@@ -38,7 +43,7 @@ const UserSchema = new mongoose.Schema({
   }
 });
 
-// Middleware pre-save per hashare la password
+// Middleware pre-save per hashare la password prima di salvarla nel database
 UserSchema.pre('save', async function(next) {
   // Se la password non è stata modificata, passa al prossimo middleware
   if (!this.isModified('password')) return next();
