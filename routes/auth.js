@@ -69,7 +69,8 @@ router.post('/login', async (req, res) => {
     res.status(200).json({ 
       token, 
       message: 'Login effettuato con successo',
-      userId: userId  // Invia anche l'ID del giocatore
+      userId: userId,  // Invia anche l'ID del giocatore
+      role: user.role // Invia il ruolo dell'utente 
     });
   } catch (error) {
     console.error('Errore nel login:', error);
