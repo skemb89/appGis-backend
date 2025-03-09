@@ -20,9 +20,17 @@ router.get('/giochi/giocatore/:userId', async (req, res) => {
             return res.status(404).json({ message: 'Nessun gioco trovato per questo utente' });
         }
 
-        // Estraiamo solo i nomi dei giochi dalle copie
-        const giochi = copieGioco.map(copia => copia.gioco);
-        
+        // Estraiamo solo i nomi dei giochi e la tipologia dalle copie
+        const giochi = copieGioco.map(copia => {
+            const gioco = copia.gioco;
+            // Restituisci anche il nome della tipologia se esiste
+            return {
+                nome: gioco.nome,
+                tipologia: gioco.tipologia ? gioco.tipologia.nome : 'N/A' // Assicurati che venga restituito il nome della tipologia
+            };
+        });
+
+        // Invia i giochi con il nome della tipologia
         res.status(200).json(giochi);
     } catch (error) {
         console.error('Errore nel recuperare i giochi:', error);
