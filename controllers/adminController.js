@@ -8,8 +8,10 @@ const Giocatore = require('../models/giocatore');
 const getUsers = async (req, res) => {
     try {
         // Trova tutti gli utenti e popola il campo 'giocatore' con i dati completi del giocatore associato
-        const users = await User.find().populate('giocatore');
-        
+        const users = await User.find()
+            .populate('giocatore') // Popola il campo 'giocatore' con i dati completi del giocatore
+            .select('username email role status giocatore'); // Seleziona solo i campi necessari: username, email, role, status, giocatore
+
         // Recupera tutti i giocatori per il menu a tendina
         const players = await Giocatore.find();
 
