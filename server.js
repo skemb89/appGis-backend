@@ -13,6 +13,8 @@ const authRoutes = require('./routes/auth');
 const giocatoriRoutes = require("./routes/giocatori");
 const regroutes = require('./routes/routereg'); // Utilizza il percorso relativo corretto per le rotte
 const adminRoutes = require('./routes/adminRoutes'); // Importa le rotte dell'admin
+const gestioneGiochiRoutes = require('./routes/gestionegiochi'); // importa le rotte per la gestione giochi (aggiunta, modifica, eliminazione)
+
 
 
 // Middleware
@@ -38,6 +40,9 @@ app.use(regroutes);
 
 // Aggiunta delle rotte admin
 app.use('/api/admin', adminRoutes);  // Aggiungi questa riga per usare le rotte dell'admin
+
+// Aggiunta delle rotte per la gestione dei giochi
+app.use('/api/gestionegiochi', gestioneGiochiRoutes); // Aggiungi questa riga per usare le rotte per la gestione dei giochi
 
 
 // Serve i file statici dalla cartella 'uploads'
